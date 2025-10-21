@@ -30,4 +30,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Transactional
     @Query("DELETE FROM Order o WHERE o.id = :id")
     void deleteOrderById(@Param("id") Integer id);
+
+    @Query("SELECT o FROM Order o WHERE o.customer.name = :username ORDER BY o.date DESC")
+    List<Order> findOrdersByUsername(@Param("username") String username);
 }

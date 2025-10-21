@@ -22,7 +22,11 @@
 <div>
     <a sec:authorize="isAnonymous() or hasAnyRole('GUEST','CUSTOMER','ADMIN')" th:href="@{/products}">📦 Quản lý Sản phẩm</a><br>
 
-    <a sec:authorize="hasAnyRole('CUSTOMER','ADMIN')" th:href="@{/orders}">🛒 Quản lý Đơn hàng</a><br>
+    <a sec:authorize="hasAnyRole('CUSTOMER','ADMIN')" th:href="@{/cart}">🛒 Giỏ hàng</a><br>
+
+    <a sec:authorize="hasRole('CUSTOMER')" th:href="@{/my/orders}">📋 Đơn hàng của tôi</a><br>
+
+    <a sec:authorize="hasAnyRole('CUSTOMER','ADMIN')" th:href="@{/orders}">📦 Quản lý Đơn hàng</a><br>
 
     <a sec:authorize="isAnonymous()" th:href="@{/login}">🔑 Login</a>
 </div>

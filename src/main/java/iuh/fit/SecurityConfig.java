@@ -55,6 +55,12 @@ public class SecurityConfig {
                         // Đơn hàng: CUSTOMER hoặc ADMIN
                         .requestMatchers("/orders/**").hasAnyRole("CUSTOMER","ADMIN")
 
+                        // Giỏ hàng: CUSTOMER hoặc ADMIN
+                        .requestMatchers("/cart/**").hasAnyRole("CUSTOMER","ADMIN")
+
+                        // Đơn hàng của tôi: chỉ CUSTOMER
+                        .requestMatchers("/my/**").hasRole("CUSTOMER")
+
                         // Các request còn lại cần đăng nhập
                         .anyRequest().authenticated()
                 )

@@ -64,15 +64,8 @@
         }
 
         a.back {
-            color: #3498db;
-        }
-
-        a.edit {
-            color: #27ae60;
-        }
-
-        a.delete {
-            color: #e74c3c;
+            color: white;
+            background-color: #3498db;
         }
 
         a:hover {
@@ -82,13 +75,21 @@
         .order-actions {
             margin-top: 15px;
         }
+
+        .total {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #27ae60;
+        }
     </style>
 </head>
 <body>
 <h1>Chi tiết đơn hàng</h1>
 
 <div class="order-detail">
-    <p><b>ID:</b> <span th:text="${order.id}"></span></p>
+    <p><b>Mã đơn hàng:</b> <span th:text="${order.id}"></span></p>
     <p><b>Ngày tạo:</b> <span th:text="${#dates.format(order.date.time, 'dd/MM/yyyy HH:mm')}"></span></p>
     <p><b>Khách hàng:</b> <span th:text="${order.customer.name}"></span></p>
 
@@ -111,12 +112,14 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="total">
+        <p>Tổng cộng: <span th:text="${#numbers.formatDecimal(orderLines.stream().map(line -> (line.unitPrice != null ? line.unitPrice : line.purchasePrice).multiply(T(java.math.BigDecimal).valueOf(line.amount))).reduce(T(java.math.BigDecimal).ZERO, (a, b) -> a.add(b)), 0, 'COMMA', 2, 'POINT')} + '₫'"></span></p>
+    </div>
 </div>
 
 <div class="order-actions">
-    <a th:href="@{/orders}" class="back">⬅ Quay lại danh sách</a>
-
-    <a th:href="@{'/orders/delete/' + ${order.id}}" sec:authorize="hasRole('ADMIN')" class="delete">🗑 Xóa</a>
+    <a th:href="@{/my/orders}" class="back">⬅ Quay lại danh sách</a>
 </div>
 </body>
 </html>

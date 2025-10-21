@@ -18,11 +18,31 @@
 <body>
 <h1>Chi tiết sản phẩm</h1>
 
+<!-- Flash messages -->
+<div th:if="${success}" style="padding: 10px; margin: 10px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
+    <span th:text="${success}"></span>
+</div>
+<div th:if="${error}" style="padding: 10px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+    <span th:text="${error}"></span>
+</div>
+
 <div class="product-detail">
     <p><b>ID:</b> <span th:text="${product.id}"></span></p>
     <p><b>Tên:</b> <span th:text="${product.name}"></span></p>
     <p><b>Giá:</b> <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + '₫'"></span></p>
+    <p><b>Tồn kho:</b> <span th:text="${product.stock != null ? product.stock : 0}"></span></p>
     <p><b>Tình trạng:</b> <span th:text="${product.inStock ? 'Còn hàng' : 'Hết hàng'}"></span></p>
+
+    <!-- Add to cart form for CUSTOMER/ADMIN -->
+    <div sec:authorize="hasAnyRole('CUSTOMER','ADMIN')">
+        <form th:if="${product.stock != null and product.stock > 0}" th:action="@{/cart/add}" method="post" style="margin-top: 15px;">
+            <input type="hidden" name="productId" th:value="${product.id}"/>
+            <label for="quantity">Số lượng:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" th:max="${product.stock}" style="width: 60px; margin: 0 10px;"/>
+            <button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">🛒 Thêm vào giỏ</button>
+        </form>
+        <p th:if="${product.stock == null or product.stock == 0}" style="color: #e74c3c; font-weight: bold;">Hết hàng</p>
+    </div>
 
     <!-- ADMIN action -->
     <div class="action-links" sec:authorize="hasRole('ADMIN')">

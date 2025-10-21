@@ -1,4 +1,4 @@
-package iuh.fit.controllers;
+package iuh.fit.controller;
 
 import iuh.fit.model.Product;
 import iuh.fit.services.ProductService;

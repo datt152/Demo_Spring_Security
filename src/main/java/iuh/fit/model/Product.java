@@ -20,6 +20,9 @@ public class Product {
 
     private boolean inStock;
 
+    @Column(nullable = false)
+    private Integer stock = 0;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

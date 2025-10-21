@@ -86,7 +86,7 @@
         <td th:text="${p.id}"></td>
         <td th:text="${p.name}"></td>
         <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')} + '₫'"></td>
-        <td th:text="${p.inStock ? 'Còn hàng' : 'Hết hàng'}"></td>
+        <td th:text="${p.stock != null ? p.stock : 0}"></td>
         <td class="action-links">
             <a th:href="@{'/products/' + ${p.id}}">Chi tiết</a>
 

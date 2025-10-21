@@ -28,7 +28,10 @@ public class ProductService {
     public void updateProduct(Product p) {
         productRepository.updateProductName(p.getId(), p.getName());
         productRepository.updateProductPrice(p.getId(), p.getPrice());
-        productRepository.updateProductStock(p.getId(), p.isInStock());
+        productRepository.updateProductInStock(p.getId(), p.isInStock());
+        if (p.getStock() != null) {
+            productRepository.updateProductStock(p.getId(), p.getStock());
+        }
     }
 
     public void deleteProduct(Integer id) {

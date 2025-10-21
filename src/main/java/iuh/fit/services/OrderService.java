@@ -6,6 +6,7 @@ import iuh.fit.model.OrderLine;
 import iuh.fit.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,11 +29,11 @@ public class OrderService {
         return orderRepository.getOrderLinesByOrderId(id);
     }
 
-
-
-
-
+    @Transactional
     public void deleteOrder(Integer id) {
-        orderRepository.deleteOrderById(id);
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order != null) {
+            orderRepository.delete(order);
+        }
     }
 }

@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p WHERE p.id = :id")
     Product getProductById(@Param("id") Integer id);
 
-    @Query(value = "INSERT INTO product (name, price, in_stock) VALUES (:name, :price, :inStock)", nativeQuery = true)
+    @Query(value = "INSERT INTO product (name, price, in_stock, stock) VALUES (:name, :price, :inStock, 0)", nativeQuery = true)
     void createProduct(@Param("name") String name,
                        @Param("price") BigDecimal price,
                        @Param("inStock") boolean inStock);
@@ -28,17 +28,24 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Transactional
     @Query("UPDATE Product p SET p.price = :price WHERE p.id = :id")
     void updateProductPrice(@Param("id") Integer id, @Param("price") BigDecimal price);
+    
     @Modifying
     @Transactional
     @Query("UPDATE Product p SET p.inStock = :inStock WHERE p.id = :id")
-    void updateProductStock(@Param("id") Integer id, @Param("inStock") boolean inStock);
+    void updateProductInStock(@Param("id") Integer id, @Param("inStock") boolean inStock);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Product p WHERE p.id = :id")
     void deleteProductById(@Param("id") Integer id);
+    
     @Modifying
     @Transactional
     @Query("UPDATE Product p SET p.name = :name WHERE p.id = :id")
     void updateProductName(Integer id, String name);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.stock = :stock WHERE p.id = :id")
+    void updateProductStock(@Param("id") Integer id, @Param("stock") Integer stock);
 }

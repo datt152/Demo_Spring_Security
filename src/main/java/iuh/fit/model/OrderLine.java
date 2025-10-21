@@ -20,6 +20,9 @@ public class OrderLine {
 
     private BigDecimal purchasePrice;
 
+    @Column(nullable = false)
+    private BigDecimal unitPrice;
+
     @ManyToOne
     private Order order;
 }

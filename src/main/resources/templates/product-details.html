@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
+        h1 { color: #2c3e50; margin-bottom: 25px; }
+        .product-detail { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 500px; }
+        .product-detail p { font-size: 1.1em; margin: 10px 0; }
+        .product-detail b { color: #34495e; }
+        a { display: inline-block; margin-top: 20px; text-decoration: none; color: #3498db; font-weight: bold; transition: color 0.3s; }
+        a:hover { color: #2980b9; }
+        .action-links a { margin-right: 10px; padding: 4px 8px; background-color: #3498db; color: white; border-radius: 4px; }
+        .action-links a:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+<h1>Chi tiết sản phẩm</h1>
+
+<div class="product-detail">
+    <p><b>ID:</b> <span th:text="${product.id}"></span></p>
+    <p><b>Tên:</b> <span th:text="${product.name}"></span></p>
+    <p><b>Giá:</b> <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + '₫'"></span></p>
+    <p><b>Tình trạng:</b> <span th:text="${product.inStock ? 'Còn hàng' : 'Hết hàng'}"></span></p>
+
+    <!-- ADMIN action -->
+    <div class="action-links" sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{'/products/edit/' + ${product.id}}">Sửa</a>
+        <a th:href="@{'/products/delete/' + ${product.id}}">Xóa</a>
+    </div>
+</div>
+
+<a th:href="@{/products}">⬅ Quay lại danh sách</a>
+</body>
+</html>

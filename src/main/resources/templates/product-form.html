@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm / Sửa sản phẩm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        .alert {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Chỉ ADMIN mới được xem form -->
+<div sec:authorize="hasRole('ADMIN')">
+
+    <h1 th:text="${product.id == null ? 'Thêm sản phẩm mới' : 'Chỉnh sửa sản phẩm'}"></h1>
+
+    <form th:action="@{/products/save}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Tên sản phẩm:</label>
+        <input type="text" th:field="*{name}" required>
+
+        <label>Giá:</label>
+        <input type="number" step="0.01" th:field="*{price}" required>
+
+        <label>
+            <input type="checkbox" th:field="*{inStock}"> Còn hàng
+        </label>
+
+        <button type="submit">💾 Lưu</button>
+    </form>
+
+    <a th:href="@{/products}">⬅ Quay lại danh sách</a>
+</div>
+
+<!-- Nếu không phải ADMIN -->
+<div sec:authorize="!hasRole('ADMIN')">
+    <p class="alert">⚠ Bạn không có quyền truy cập trang này!</p>
+    <a th:href="@{/products}">⬅ Quay lại danh sách sản phẩm</a>
+</div>
+
+</body>
+</html>

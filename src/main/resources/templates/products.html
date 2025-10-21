@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #3498db;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-links a {
+            margin-right: 6px;
+            padding: 4px 8px;
+            font-size: 0.9em;
+        }
+
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📦 Danh sách sản phẩm</h1>
+
+<!-- Chỉ ADMIN mới thấy nút Thêm sản phẩm -->
+<div sec:authorize="hasRole('ADMIN')">
+    <a class="add-btn" th:href="@{/products/new}">➕ Thêm sản phẩm mới</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Giá</th>
+        <th>Tồn kho</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${products}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')} + '₫'"></td>
+        <td th:text="${p.inStock ? 'Còn hàng' : 'Hết hàng'}"></td>
+        <td class="action-links">
+            <a th:href="@{'/products/' + ${p.id}}">Chi tiết</a>
+
+            <!-- Chỉ ADMIN mới thấy nút Sửa/Xóa -->
+            <span sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{'/products/edit/' + ${p.id}}">Sửa</a>
+                <a th:href="@{'/products/delete/' + ${p.id}}">Xóa</a>
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/home}">⬅ Quay lại trang chủ</a>
+
+</body>
+</html>

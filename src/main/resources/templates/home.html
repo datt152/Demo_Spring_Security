@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chủ - Shopping App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #2c3e50; }
+        a { display: inline-block; margin: 10px 0; text-decoration: none;
+            color: white; background-color: #3498db; padding: 10px 20px; border-radius: 5px; }
+        a:hover { background-color: #2980b9; }
+        .info { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<h1 th:text="${message}">Welcome Thymeleaf</h1>
+<div class="info">
+    <p>Ngày hôm nay: <span th:text="${date}">2025-10-13</span></p>
+</div>
+
+<div>
+    <a sec:authorize="isAnonymous() or hasAnyRole('GUEST','CUSTOMER','ADMIN')" th:href="@{/products}">📦 Quản lý Sản phẩm</a><br>
+
+    <a sec:authorize="hasAnyRole('CUSTOMER','ADMIN')" th:href="@{/orders}">🛒 Quản lý Đơn hàng</a><br>
+
+    <a sec:authorize="isAnonymous()" th:href="@{/login}">🔑 Login</a>
+</div>
+
+
+</body>
+</html>

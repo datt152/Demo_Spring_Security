@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Danh sách đơn hàng</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #27ae60;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #1e8449;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 15px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-links a {
+            margin-right: 6px;
+            padding: 4px 8px;
+            font-size: 0.9em;
+            background-color: #3498db;
+        }
+
+        .action-links a:hover {
+            background-color: #2980b9;
+        }
+
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<h1>📦 Danh sách đơn hàng</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ngày tạo</th>
+        <th>Khách hàng</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${#dates.format(order.date.time, 'dd/MM/yyyy HH:mm')}"></td>
+        <td th:text="${order.customer.name}"></td>
+        <td class="action-links">
+            <!-- Luôn hiển thị -->
+            <a th:href="@{'/orders/' + ${order.id}}">Chi tiết</a>
+
+            <!-- Chỉ ADMIN mới được xóa -->
+            <a th:href="@{'/orders/delete/' + ${order.id}}"
+               sec:authorize="hasRole('ADMIN')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/home}">⬅ Quay lại trang chủ</a>
+</body>
+</html>
